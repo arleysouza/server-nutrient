@@ -30,9 +30,20 @@ No arquivo `src/database/load.ts` estão as instruções SQL para carregar os da
 ### Rotas
 Rotas que não requer login:
 - HTTP GET /login - usuário efetua o login e obtém o token de acesso;
-- HTTP POST /user - usuário efetua o seu cadastro;
+- HTTP POST /user - usuário efetua o seu cadastro para criar uma conta;
 - HTTP GET /food/search?term=café - obter os alimentos não industrializados que possuem um termo, por exemplo, _café_;
 - HTTP GET /food/get?idfood=511 - obter os dados de um alimento não industrializado pelo identificador;
 - HTTP GET /field - obter todos os campos;
 - HTTP GET /category - obter todas as categorias dos alimentos não industrializados.
+
 Rotas que requer estar logado, ou seja, é necessário enviar o token no header da requisição:
+- HTTP PUT /user/alias - usuário altera o nome de usuário da sua conta;
+- HTTP PUT /user/mail - usuário altera o e-mail da sua conta;
+- HTTP PUT /user/password - usuário altera a senha de acesso da sua conta;
+- HTTP GET /profile - usuário obtém os seus dados físicos;
+- HTTP POST /profile - usuário cria ou altera os seus dados físicos;
+- HTTP DELETE /profile - usuário remove os seus dados físicos;
+
+Rotas que requer estar logado com o perfil _adm_:
+- HTTP GET /user - usuário administrador lista todos os usuários;
+- HTTP PUT /user/role - usuário administrador altera o perfil de acesso do usuário. Os tipos são _user_ e _adm_;
