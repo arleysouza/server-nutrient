@@ -1,6 +1,16 @@
 ## Persistir dados de alimentação
 
-A  aplicação tem como objetivo persistir no SGBD PostgreSQL os dados de alimentação do usuário. Os alimentos são divididos em alimentos não industrializados, com os de nutrientes obtidos na tabela TACO (Tabela Brasileira de Composição de Alimentos) e os alimentos industrizalizados, na qual o usuário deverá cadastrar a tabela de nutrientes e calorias.
+A  aplicação tem como objetivo manter o registro dos alimentos consumidos diariamente pelos usuários para o controle de calorias e nutrientes. 
+Os alimentos são divididos em industrializados e não industrializados. As calorias e nutrientes dos alimentos não industrializados foram obtidos na tabela TACO (Tabela Brasileira de Composição de Alimentos). Cada usuário deverá cadastrar as calorias e nutrientes dos alimentos industrizalizados.
+A aplicação persiste os dados nas seguintes tabelas do SBGD PostgreSQL:
+- tabela _foods_: possui os alimentos extraídos da tabela TACO;
+- tabela _categories_: possui as categorias dos alimentos da tabela TACO;
+- tabela _products_: receberá os produtos de cada usuário. Caberá ao usuário olhar a composição de nutrientes do alimento e fazer o registro;
+- tabela _consumption_foods_: registro do consumo diário do usuário de alimentos não industrialziados;
+- tabela _consumption_products_: registro do consumo diário do usuário de alimentos industrialziados;
+- tablea _profiles_: o ideal é incluir outros campos para manter informações relevantes para a dieta do usuário. 
+
+![](https://github.com/arleysouza/server-nutrient/blob/main/images/modelDB.png)
 
 ### Instruções de uso
 Utilize os comandos a seguir para clonar o projeto e instalar as dependências.
@@ -23,7 +33,6 @@ DB_PORT = 5432
 
 ### SQL para criar as tabelas
 No arquivo `src/database/create.ts` estão as instruções SQL para criar as tabelas no BD. Execute o comando `npm run create` para submeter as instruções SQL no SGBD. As tabelas estão organizadas da seguinte forma.
-![](https://github.com/arleysouza/server-nutrient/blob/main/images/modelDB.png)
 
 No arquivo `src/database/load.ts` estão as instruções SQL para carregar os dados nas tabelas `categories`, `foods` e `fields`. Execute o comando `npm run load` para submeter as instruções SQL no SGBD.
 
@@ -49,6 +58,10 @@ Rotas que requer estar logado, ou seja, é necessário enviar o token no header 
 - HTTP POST /product/copy - cada usuário precisa ter os seus próprios produtos, ou seja, o mesmo produto pode existir na conta de vários usuários. Essa operação copia o produto de outro usuário para a conta do usuário;
 - HTTP PUT /product - atualiza um produto que está na conta do usuário;
 - HTTP DELETE /product - exclui um produto que está na conta do usuário;
+- HTTP GET /consumption/food e /consumption/product - retorna os alimentos consumidos no dia pelo usuário;
+- HTTP POST /consumption/food e /consumption/product - cria um consumo de alimento pelo usuário;
+- HTTP PUT /consumption/food e /consumption/product - atualiza o registro de consumo de alimento pelo usuário;
+- HTTP DELETE /consumption/food e /consumption/product - exclui o registro de consumo de alimento pelo usuário.
 
 Rotas que requer estar logado com o perfil _adm_:
 - HTTP GET /user - usuário administrador lista todos os usuários;
