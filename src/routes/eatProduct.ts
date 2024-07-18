@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import {ConsumptionFoodController as controller} from "../controllers";
+import {EatProcuctController as controller} from "../controllers";
 
 const routes = Router();
 
@@ -9,6 +9,6 @@ routes.put("/", controller.update);
 routes.delete("/", controller.delete);
 
 //aceita qualquer método HTTP ou URL
-routes.use( (_:Request,res:Response) => res.status(404).json({error:"Operação desconhecida com o consumo de alimentos"}) );
+routes.use( (_:Request,res:Response) => res.status(404).json({error:"Operação desconhecida com o consumo de produtos"}) );
 
 export default routes;

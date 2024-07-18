@@ -4,13 +4,13 @@ import FoodController from "./FoodController";
 import ProfileController from "./ProfileController";
 import UserController from "./UserController";
 import ProcuctController from "./ProcuctController";
-import ConsumptionProcuctController from "./ConsumptionProcuctController";
-import ConsumptionFoodController from "./ConsumptionFoodController";
+import EatFoodController from "./EatFoodController";
+import EatProcuctController from "./EatProcuctController";
 
 export {
     CategoryController,
-    ConsumptionFoodController,
-    ConsumptionProcuctController,
+    EatFoodController,
+    EatProcuctController,
     FieldController,
     FoodController,
     ProcuctController,

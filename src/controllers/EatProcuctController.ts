@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { query } from "../database/connection";
 
-class ConsumptionFoodController {
+class ConsumptionProcuctController {
   public async list(req: Request, res: Response): Promise<void> {
     const date = req.query.date as string;
     const { id:user } = res.locals;
@@ -12,10 +12,12 @@ class ConsumptionFoodController {
       try {
         const result: any = await query(
           `SELECT A.id::varchar, TO_CHAR(A.date, 'YYYY-MM-DD') AS date, A.quantity, 
-            B.description, B.energy, B.protein, 
-            B.carbohydrate, B.dietary_fiber, B.calcium, B.sodium
-          FROM consumption_foods AS A INNER JOIN foods as B 
-          ON A.food = B.id
+            B.description, B.serving_size, B.serving_size_unit, 
+            B.quantity_per_serving, B.quantity_per_serving_unit, B.energy, B.protein, 
+            B.carbohydrate, B.sugar, B.dietary_fiber, B.total_fat, B.saturated_fat,
+            B.trans_fat, B.calcium, B.sodium
+          FROM eat_products AS A INNER JOIN products as B 
+          ON A.product = B.id
           WHERE A._user=$1 AND A.date=$2
           ORDER BY B.description`,
           [user, date]
@@ -33,10 +35,10 @@ class ConsumptionFoodController {
   }
 
   public create = async (req: Request, res: Response): Promise<void> => {
-    const { food, date, quantity } = req.body;
+    const { product, date, quantity } = req.body;
     const { id: user } = res.locals;
-    if (this.isInvalid(food)) {
-      res.json({ error: "Forneça o alimento" });
+    if (this.isInvalid(product)) {
+      res.json({ error: "Forneça o produto" });
     } else if (!isValidDate(date)) {
       res.json({ error: "Forneça uma data válida" });
     } else if (this.isInvalid(quantity)) {
@@ -44,10 +46,10 @@ class ConsumptionFoodController {
     } else {
       try {
         const result: any = await query(
-          `INSERT INTO consumption_foods(_user, food, date, quantity) 
+          `INSERT INTO eat_products(_user, product, date, quantity) 
              VALUES($1,$2,$3,$4)
-             RETURNING id::varchar, food, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
-          [user, food, date, quantity]
+             RETURNING id::varchar, product, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
+          [user, product, date, quantity]
         );
         res.json(result);
       } catch (e: any) {
@@ -57,12 +59,12 @@ class ConsumptionFoodController {
   };
 
   public update = async (req: Request, res: Response): Promise<void> => {
-    const { id, food, date, quantity } = req.body;
+    const { id, product, date, quantity } = req.body;
     const { id: user } = res.locals;
     if (this.isInvalid(id)) {
       res.status(500).json({ error: "Forneça o consumo a ser atualizado" });
-    } else if (this.isInvalid(food)) {
-      res.json({ error: "Forneça o alimento" });
+    } else if (this.isInvalid(product)) {
+      res.json({ error: "Forneça o produto" });
     } else if (!isValidDate(date)) {
       res.json({ error: "Forneça uma data válida" });
     } else if (this.isInvalid(quantity)) {
@@ -70,11 +72,11 @@ class ConsumptionFoodController {
     } else {
       try {
         const result: any = await query(
-          `UPDATE consumption_foods
-           SET food=$1, date=$2, quantity=$3
+          `UPDATE eat_products
+           SET product=$1, date=$2, quantity=$3
             WHERE id=$4 AND _user=$5 
-            RETURNING id::varchar, food, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
-          [food, date, quantity, id, user]
+            RETURNING id::varchar, product, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
+          [product, date, quantity, id, user]
         );
         if (result.rows) {
           res.json(result.rows);
@@ -100,9 +102,9 @@ class ConsumptionFoodController {
     } else {
       try {
         const result: any = await query(
-          `DELETE FROM consumption_foods 
+          `DELETE FROM eat_products 
           WHERE id=$1 AND _user=$2 
-          RETURNING id::varchar, food, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
+          RETURNING id::varchar, product, TO_CHAR(date, 'YYYY-MM-DD') AS date, quantity`,
           [id, user]
         );
         if (result.rowcount > 0) {
@@ -145,5 +147,5 @@ function isValidDate(dateString: string): boolean {
   );
 }
 
-const controller = new ConsumptionFoodController();
+const controller = new ConsumptionProcuctController();
 export default controller;

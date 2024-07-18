@@ -6,8 +6,8 @@ A aplicação persiste os dados nas seguintes tabelas do SBGD PostgreSQL:
 - tabela _foods_: possui os alimentos extraídos da tabela TACO;
 - tabela _categories_: possui as categorias dos alimentos da tabela TACO;
 - tabela _products_: receberá os produtos de cada usuário. Caberá ao usuário olhar a composição de nutrientes do alimento e fazer o registro;
-- tabela _consumption_foods_: registro do consumo diário do usuário de alimentos não industrialziados;
-- tabela _consumption_products_: registro do consumo diário do usuário de alimentos industrialziados;
+- tabela _eat_foods_: registro do consumo diário do usuário de alimentos não industrializados;
+- tabela _eat_products_: registro do consumo diário do usuário de alimentos industrializados;
 - tablea _profiles_: o ideal é incluir outros campos para manter informações relevantes para a dieta do usuário. 
 
 ![](https://github.com/arleysouza/server-nutrient/blob/main/images/modelDB.png)
@@ -58,11 +58,11 @@ Rotas que requer estar logado, ou seja, é necessário enviar o token no header 
 - HTTP POST /product/copy - cada usuário precisa ter os seus próprios produtos, ou seja, o mesmo produto pode existir na conta de vários usuários. Essa operação copia o produto de outro usuário para a conta do usuário;
 - HTTP PUT /product - atualiza um produto que está na conta do usuário;
 - HTTP DELETE /product - exclui um produto que está na conta do usuário;
-- HTTP GET /consumption/food e /consumption/product - retorna os alimentos consumidos no dia pelo usuário;
-- HTTP POST /consumption/food e /consumption/product - cria um consumo de alimento pelo usuário;
-- HTTP PUT /consumption/food e /consumption/product - atualiza o registro de consumo de alimento pelo usuário;
-- HTTP DELETE /consumption/food e /consumption/product - exclui o registro de consumo de alimento pelo usuário.
+- HTTP GET /eat/food e /eat/product - retorna os alimentos consumidos no dia pelo usuário;
+- HTTP POST /eat/food e /eat/product - cria um consumo de alimento pelo usuário;
+- HTTP PUT /eat/food e /eat/product - atualiza o registro de consumo de alimento pelo usuário;
+- HTTP DELETE /eat/food e /eat/product - exclui o registro de consumo de alimento pelo usuário.
 
 Rotas que requer estar logado com o perfil _adm_:
 - HTTP GET /user - usuário administrador lista todos os usuários;
-- HTTP PUT /user/role - usuário administrador altera o perfil de acesso do usuário. Os tipos são _user_ e _adm_;
+- HTTP PUT /user/role - usuário administrador altera o perfil de acesso do usuário. Os tipos são _user_ e _adm_.

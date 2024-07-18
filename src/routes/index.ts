@@ -7,16 +7,16 @@ import food from "./food";
 import profile from "./profile";
 import user from "./user";
 import product from "./product";
-import consumptionProduct from "./consumptionProduct";
-import consumptionFood from "./consumptionFood";
+import eatProduct from "./eatProduct";
+import eatFood from "./eatFood";
 
 const routes = Router();
 
 routes.post("/login", UserController.login);
 routes.use("/food", food);
 routes.use("/category", category);
-routes.use("/consumption/food", validadeAcess, consumptionFood);
-routes.use("/consumption/product", validadeAcess, consumptionProduct);
+routes.use("/eat/food", validadeAcess, eatFood);
+routes.use("/eat/product", validadeAcess, eatProduct);
 routes.use("/field", field);
 routes.use("/product", validadeAcess, product);
 routes.use("/profile", validadeAcess, profile);

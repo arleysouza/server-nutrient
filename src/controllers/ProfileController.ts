@@ -10,11 +10,7 @@ class ProfileController {
         [id]
       );
 
-      if (result.length === 1) {
-        res.json(result[0]);
-      } else {
-        res.status(502).json({ error: "Perfil não cadastrado" });
-      }
+      res.json(result);
     } catch (e: any) {
       res.status(502).json({ error: e.message });
     }
@@ -40,7 +36,7 @@ class ProfileController {
           const result: any = await query(
             `INSERT INTO profiles(_user, birth_date, weight, sex) 
                 VALUES($1,$2,$3,$4)
-                RETURNING id::varchar,TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
+                RETURNING TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
             [id, birth_date, weight, sex]
           );
           res.json(result);
@@ -49,7 +45,7 @@ class ProfileController {
             `UPDATE profiles 
                 SET birth_date=$1, weight=$2, sex=$3 
                 WHERE _user=$4
-                RETURNING id::varchar, TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
+                RETURNING TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
             [birth_date, weight, sex, id]
           );
           if (result.rows) {
@@ -70,13 +66,13 @@ class ProfileController {
     try {
       const result: any = await query(
         `DELETE FROM profiles WHERE _user = $1 
-        RETURNING id::varchar, TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
+        RETURNING TO_CHAR(birth_date, 'YYYY-MM-DD') AS birth_date, weight, sex`,
         [id]
       );
       if (result.rowcount > 0) {
         res.json(result.rows);
       } else if (result.rowcount === 0) {
-        res.json({error: "Não existe perfil cadastrado"});
+        res.json({ error: "Não existe perfil cadastrado" });
       } else {
         res.json(result);
       }

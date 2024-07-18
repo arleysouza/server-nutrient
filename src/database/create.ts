@@ -6,7 +6,7 @@ async function init() {
     DO
     $$
     BEGIN
-        DROP TABLE IF EXISTS users, profiles, fields, categories, foods, products, votes, consumption_foods, consumption_products;
+        DROP TABLE IF EXISTS users, profiles, fields, categories, foods, products, votes, eat_foods, eat_products;
 
         DROP TYPE IF EXISTS enum_sex, enum_role CASCADE;
 
@@ -89,9 +89,9 @@ async function init() {
         CREATE TABLE products (
             id SERIAL NOT NULL,
             _user INTEGER NOT NULL,
-            description VARCHAR(50) NULL,
-            serving_size FLOAT NULL,
-            serving_size_unit VARCHAR(10) NULL,
+            description VARCHAR(50) NOT NULL,
+            serving_size FLOAT NOT NULL,
+            serving_size_unit VARCHAR(10) NOT NULL,
             quantity_per_serving FLOAT NULL,
             quantity_per_serving_unit VARCHAR(20) NULL,
             energy FLOAT NULL,
@@ -111,22 +111,7 @@ async function init() {
                 ON UPDATE CASCADE
         );
 
-        CREATE TABLE votes (
-            product SERIAL NOT NULL,
-            _user INTEGER NOT NULL,
-            correct BOOL NULL,
-            PRIMARY KEY(product, _user),
-            FOREIGN KEY(_user)
-                REFERENCES users(id)
-                ON DELETE RESTRICT
-                ON UPDATE CASCADE,
-            FOREIGN KEY(product)
-                REFERENCES products(id)
-                ON DELETE RESTRICT
-                ON UPDATE CASCADE
-        );
-
-        CREATE TABLE consumption_foods (
+        CREATE TABLE eat_foods (
             id SERIAL NOT NULL,
             _user INTEGER NOT NULL,
             food INTEGER NOT NULL,
@@ -143,7 +128,7 @@ async function init() {
                 ON UPDATE CASCADE
         );
 
-        CREATE TABLE consumption_products (
+        CREATE TABLE eat_products (
             id SERIAL NOT NULL,
             _user INTEGER NOT NULL,
             product INTEGER NOT NULL,

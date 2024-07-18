@@ -24,7 +24,7 @@ class UserController {
         );
 
         if (result.length === 0) {
-          res.status(401).json({ message: "E-mail ou senha incorretos" });
+          res.status(401).json({ error: "E-mail ou senha incorretos" });
           return;
         }
 
@@ -40,7 +40,7 @@ class UserController {
           };
           res.json({ ...object, token: tokenize(object) });
         } else {
-          res.status(401).json({ message: "E-mail ou senha incorretos" });
+          res.status(401).json({ error: "E-mail ou senha incorretos" });
         }
       } catch (e: any) {
         res.status(502).json({ error: "Erro ao processar a solicitação" });
@@ -67,11 +67,12 @@ class UserController {
           RETURNING id::varchar, alias, mail, role`,
           [alias, mail, hashedPassword]
         );
+
         res.json({ ...result, token: tokenize(result) });
       } catch (e: any) {
         if (e.message.includes("duplicate key")) {
           res.status(409).json({
-            message:
+            error:
               "O e-mail fornecido já está em uso. Por favor, forneça um e-mail diferente",
           });
         } else {
