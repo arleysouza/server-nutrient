@@ -4,6 +4,7 @@ import {ProcuctController as controller} from "../controllers";
 const routes = Router();
 
 routes.get("/search", controller.search);
+routes.get("/searchbyuser", controller.searchByUser);
 routes.get("/byuser", controller.listByUser);
 routes.post("/", controller.create);
 routes.post("/copy", controller.copy);

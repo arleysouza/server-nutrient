@@ -94,7 +94,7 @@ class ConsumptionProcuctController {
   };
 
   public delete = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.body;
+    const { id } = req.params;
     const { id: user } = res.locals;
 
     if (this.isInvalid(id)) {

@@ -52,7 +52,8 @@ Rotas que requer estar logado, ou seja, é necessário enviar o token no header 
 - HTTP GET /profile - usuário obtém os seus dados físicos;
 - HTTP POST /profile - usuário cria ou altera os seus dados físicos;
 - HTTP DELETE /profile - usuário remove os seus dados físicos;
-- HTTP GET /product/all - obtém todos os produtos industrializados, independentemente do usuário que cadastrou;
+- HTTP GET /product/search - obtém todos os produtos que satisfazem ao termo de busca e que não são do usuário;
+- HTTP GET /product/searchbyuser - obtém todos os produtos que satisfazem ao termo de busca e não são do usuário;
 - HTTP GET /product/byuser - obtém todos os produtos industrializados que o usuário cadastrou;
 - HTTP POST /product - cria novo produto industrializado;
 - HTTP POST /product/copy - cada usuário precisa ter os seus próprios produtos, ou seja, o mesmo produto pode existir na conta de vários usuários. Essa operação copia o produto de outro usuário para a conta do usuário;

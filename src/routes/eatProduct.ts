@@ -6,7 +6,7 @@ const routes = Router();
 routes.get("/", controller.list);
 routes.post("/", controller.create);
 routes.put("/", controller.update);
-routes.delete("/", controller.delete);
+routes.delete("/:id", controller.delete);
 
 //aceita qualquer método HTTP ou URL
 routes.use( (_:Request,res:Response) => res.status(404).json({error:"Operação desconhecida com o consumo de produtos"}) );

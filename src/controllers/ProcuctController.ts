@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { query } from "../database/connection";
 
 class ProcuctController {
+  // Busca os produtos que não são do usuário
   public async search(req: Request, res: Response): Promise<void> {
     let term = req.query.term as string;
     if (!term || term.trim().length === 0) {
@@ -17,6 +18,34 @@ class ProcuctController {
         carbohydrate, sugar, dietary_fiber, total_fat, trans_fat, calcium, sodium
         FROM products
         WHERE _user != $1 AND description ILIKE $2
+        ORDER BY description
+        LIMIT 10`,
+          [id, term]
+        );
+
+        res.json(result);
+      } catch (e: any) {
+        res.status(502).json({ error: e.message });
+      }
+    }
+  }
+
+  // Busca os produtos que são do usuário
+  public async searchByUser(req: Request, res: Response): Promise<void> {
+    let term = req.query.term as string;
+    if (!term || term.trim().length === 0) {
+      res.json([]);
+    } else {
+      const { id } = res.locals;
+      try {
+        term = `%${term.trim()}%`;
+
+        const result: any = await query(
+          `SELECT id::varchar, description, serving_size, serving_size_unit, 
+        quantity_per_serving, quantity_per_serving_unit, energy, protein, 
+        carbohydrate, sugar, dietary_fiber, total_fat, trans_fat, calcium, sodium
+        FROM products
+        WHERE _user = $1 AND description ILIKE $2
         ORDER BY description
         LIMIT 10`,
           [id, term]
